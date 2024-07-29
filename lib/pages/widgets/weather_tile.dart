@@ -29,7 +29,7 @@ class WeatherTile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Image.asset(
-              getImage(temperature),
+              getImage(""),
               height: 62,
               width: 62,
             ),

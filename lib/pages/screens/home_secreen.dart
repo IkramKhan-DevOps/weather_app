@@ -2,10 +2,11 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:weather/models/city.dart';
-import 'package:weather/pages/widgets/location_data.dart';
+import 'package:weather/models/weather.dart';
 import 'package:weather/pages/widgets/todays_average_data.dart';
 import 'package:weather/pages/widgets/weather_container.dart';
+import 'package:weather/providers/welcome_note.dart';
+import 'package:weather/services/weather_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,10 +16,40 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Weather? _weather; // Change to nullable Weather to reflect initial state
+  bool _isLoading = true; // Add a loading state
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchWeather(); // Fetch weather data on startup
+  }
+
+  // Fetch weather data asynchronously
+  Future<void> _fetchWeather() async {
+    final weatherService = WeatherService('2a7fe88cd9c8e683a5d99c4cc7d80afd');
+
+    try {
+      final cityName = await weatherService.getCurrentCity();
+      final weather = await weatherService.getWeather(cityName);
+
+      setState(() {
+        _weather = weather;
+        print(weather.mainCondition);
+        _isLoading = false; // Data has been fetched
+      });
+    } catch (e) {
+      print(e);
+      setState(() {
+        _isLoading = false; // Ensure loading state is turned off on error
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    final City userCity = City(cityName: "Gilgit");
+    DateTime currentTime = DateTime.now(); // Get the current time
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -35,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
           height: screenSize.height - 40,
           child: Stack(
             children: [
-              // PURPLE
+              // Background elements
               Align(
                 alignment: const AlignmentDirectional(3, -0.3),
                 child: Container(
@@ -47,7 +78,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              // PURPLE
               Align(
                 alignment: const AlignmentDirectional(-3, -0.3),
                 child: Container(
@@ -59,7 +89,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              // YELLOW
               Align(
                 alignment: const AlignmentDirectional(0, -1.2),
                 child: Container(
@@ -70,7 +99,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              // MAGIC
               BackdropFilter(
                 filter: ImageFilter.blur(
                   sigmaX: 100.0,
@@ -83,8 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
 
-              // REAL APP LOGIC
-
+              // Main content
               SizedBox(
                 height: screenSize.height,
                 width: screenSize.width,
@@ -92,13 +119,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // TOP
-                      LocationData(userCity: userCity),
-
-                      //MIDDLE
-                      const WeatherContainer(),
-
-                      // END
+                      const WelcomeNote(),
+                      if (_isLoading)
+                        const Center(
+                            child:
+                                CircularProgressIndicator()) // Show loading indicator
+                      else
+                        WeatherContainer(
+                          currentTime: currentTime,
+                          currentTemperature:
+                              _weather?.temperature.round().toString() ?? 'N/A',
+                          description: _weather?.mainCondition ?? 'Unknown',
+                        ),
                       const TodaysAverageData(),
                     ],
                   ),
