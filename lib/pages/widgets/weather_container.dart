@@ -1,33 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:weather/models/get_image.dart'; // Import intl package for formatting
 
 class WeatherContainer extends StatelessWidget {
-  const WeatherContainer({super.key});
+  final DateTime currentTime;
+  final String currentTemperature;
+  final String description;
+
+  const WeatherContainer({
+    super.key,
+    required this.currentTime,
+    required this.currentTemperature,
+    required this.description,
+  });
 
   @override
   Widget build(BuildContext context) {
+    // Format the date
+    String formattedDate = DateFormat('EEEE, d, yyyy').format(currentTime);
+
     return Column(
       children: [
         Align(
           alignment: Alignment.center,
           child: Image.asset(
-            "assets/images/1.png",
+            getImage(description),
             scale: 1.65,
           ),
         ),
-        const Center(
+        Center(
           child: Text(
-            '0 °C',
-            style: TextStyle(
+            '$currentTemperature °C',
+            style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w600,
               fontSize: 50,
             ),
           ),
         ),
-        const Center(
+        Center(
           child: Text(
-            'THUNDER STORMS',
-            style: TextStyle(
+            description,
+            style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w500,
               fontSize: 20,
@@ -35,10 +49,10 @@ class WeatherContainer extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 5),
-        const Center(
+        Center(
           child: Text(
-            'Friday 27th - 10:49 pm',
-            style: TextStyle(
+            formattedDate, // Display the formatted date
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 14,
               fontWeight: FontWeight.w300,
