@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weather/screens/home.dart';
+import 'package:weather/pages/screens/dash_board_secreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,9 +17,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: HomeScreen(),
+      home: const DashBoardScreen(),
     );
   }
 }
-
-
