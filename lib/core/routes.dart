@@ -12,13 +12,13 @@ class AppRoutes {
   static const String dashboardScreen = '/dashboard_screen';
   static const String forecastScreen = '/forecast_screen';
   static const String searchScreen = '/search_screen';
-  static const String splashScreen = '/splash_screen';
+  // static const String splashScreen = '/splash_screen';
 
   static Map<String, WidgetBuilder> routes = {
     homeScreen: (context) => const HomeScreen(),
     dashboardScreen: (context) => const DashBoardScreen(),
     forecastScreen: (context) => const ForecastScreen(),
-    splashScreen: (context) => const SplashScreen(),
+    // splashScreen: (context) => const SplashScreen(),
   };
 
 }

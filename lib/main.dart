@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.splashScreen,
+      initialRoute: AppRoutes.dashboardScreen,
       routes: AppRoutes.routes,
     );
   }
