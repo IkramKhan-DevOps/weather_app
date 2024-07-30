@@ -62,9 +62,18 @@ class Helper {
     return DateFormat('h:mm a').format(date);
   }
 
-  static String formatTimeString(String dateTimeStr) {
-    final dateTime = DateTime.parse(dateTimeStr);
-    return DateFormat('h:mm a').format(dateTime); // Format time in 12-hour format with AM/PM
+
+  static String formatTimeString(String timeStr) {
+    try {
+      // Append a dummy date to the time string to create a DateTime object
+      final dateTime = DateTime.parse('1970-01-01 $timeStr:00');
+
+      // Format the DateTime object to a 12-hour time format with AM/PM
+      return DateFormat('h:mm a').format(dateTime);
+    } catch (e) {
+      // Handle parsing errors or invalid input
+      return 'Invalid';
+    }
   }
 
   static double kelvinToCelsius(double kelvin) {
