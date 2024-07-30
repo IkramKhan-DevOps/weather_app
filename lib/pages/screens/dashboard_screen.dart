@@ -49,7 +49,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
             child: Icon(Icons.newspaper, color: Colors.white),
           ),
           CurvedNavigationBarItem(
-            child: Icon(Icons.search, color: Colors.white),
+            child: Icon(Icons.info_outline, color: Colors.white),
           ),
         ],
         onTap: _onItemTapped,

@@ -2,8 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:weather/pages/views/famous_cities_view.dart';
-import 'package:weather/pages/widgets/textfiled.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
@@ -12,6 +10,7 @@ class SearchScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
     TextEditingController controller = TextEditingController();
+
     return Scaffold(
       backgroundColor: Colors.black,
       extendBodyBehindAppBar: true,
@@ -19,14 +18,13 @@ class SearchScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
+        const SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(15, 1.0 * kToolbarHeight, 15, 1),
         child: SizedBox(
           height: screenSize.height,
           child: Stack(
-            //alignment: Alignment.topCenter,
             children: [
               // PURPLE
               Align(
@@ -79,31 +77,44 @@ class SearchScreen extends StatelessWidget {
                 ),
               ),
 
-              //header data
-              SizedBox(
+              // Content
+              Center(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    // Dummy Icon
+                    Icon(
+                      Icons.info_outline,
+                      size: 100,
+                      color: Colors.white.withOpacity(0.8),
+                    ),
+                    SizedBox(height: 20),
+
+                    // Title
                     const Text(
-                      "Pick a Location",
+                      'About This App',
                       style: TextStyle(
                         color: Colors.white,
+                        fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        fontSize: 25,
                       ),
                     ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      textAlign: TextAlign.center,
-                      "Find the area or the city you want to know the detailed weather info at this time",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w300,
-                        color: Colors.white,
+                    SizedBox(height: 10),
+
+                    // Description
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Text(
+                        'This app provides accurate and up-to-date weather forecasts. Explore current weather conditions, daily and hourly forecasts, and more. Designed with a modern and intuitive interface to keep you informed and prepared for your day.\n\n'
+                            'Created by a passionate team of Flutter developers, this app showcases our commitment to delivering high-quality and user-friendly applications. Our team works tirelessly to ensure that you receive the best weather updates with an engaging and seamless experience.',
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.7),
+                          fontSize: 16,
+                        ),
+                        textAlign: TextAlign.start,
                       ),
+
                     ),
-                    const SizedBox(height: 20),
-                    MyTextfiledRow(controller: controller, hintText: "Search"),
-                    const SizedBox(height: 20),
-                    const FamousCitiesView(),
                   ],
                 ),
               ),

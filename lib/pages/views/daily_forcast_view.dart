@@ -58,9 +58,9 @@ class WeatherTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  summary.time,
+                  Helper.formatTimeString(summary.time),
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                     fontWeight: FontWeight.w400,
                     color: Colors.white.withOpacity(0.7),
                   ),

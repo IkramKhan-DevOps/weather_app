@@ -87,7 +87,6 @@ class WeatherService {
         weatherId: weatherId,
       ));
     }
-
     return summaries;
   }
 

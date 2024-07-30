@@ -95,46 +95,32 @@ class ForecastScreen extends ConsumerWidget {
                 child: Column(
                   children: [
                     // MAIN HEADING
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          "Forecast Report",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 25,
-                          ),
+                    const Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        "Forecast Report",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w300,
+                          color: Colors.white,
                         ),
                       ),
                     ),
 
                     // HEADING
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          "Today",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
+                    const Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        "Today",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25,
                         ),
-                        Text(
-                          '',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white.withOpacity(0.9),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
 
                     // ---------------------------------------------------------
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     forecast.when(
                       data: (forecast) {
                         final summaries = WeatherService.aggregateToHourlyData(forecast);

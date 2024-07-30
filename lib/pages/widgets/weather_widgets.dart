@@ -33,9 +33,9 @@ class GreetingsWidget extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        const Text(
-          'Greetings!',
-          style: TextStyle(
+         Text(
+          getGreeting(DateTime.now()),
+          style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 25,
