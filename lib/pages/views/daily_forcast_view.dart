@@ -1,51 +1,84 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:weather/pages/widgets/weather_tile.dart';
+
+import '../../core/helpers.dart';
+import '../../models/weather_forecast_models.dart';
 
 class WeatherTileRow extends StatelessWidget {
-  const WeatherTileRow({super.key});
+
+  final List<HourlyData> summaries;
+  const WeatherTileRow({super.key, required this.summaries});
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> weatherData = generateWeatherData();
 
-    //the listview builder
     return SizedBox(
       height: 100,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: weatherData.length,
+        itemCount: summaries.length,
         itemBuilder: (context, index) {
-          final data = weatherData[index];
+          final summary = summaries[index];
           return WeatherTile(
-            time: data['time'],
-            temperature: data['temperature'],
+            summary: summary,
           );
         },
       ),
     );
   }
 
-  //generate the time after every 2 hours
-  List<Map<String, dynamic>> generateWeatherData() {
-    List<Map<String, dynamic>> weatherData = [];
-    DateTime now = DateTime.now();
+}
 
-    // Start from the next hour rounded up to the nearest 3-hour mark
-    int startHour = (now.hour + 2) - (now.hour % 2);
+class WeatherTile extends StatelessWidget {
+  final HourlyData summary;
+  const WeatherTile({
+    super.key, required this.summary
+  });
 
-    for (int i = startHour; i < 24; i += 2) {
-      DateTime hour = DateTime(now.year, now.month, now.day, i);
-      String formattedTime = DateFormat('hh:00 a')
-          .format(hour); // Format to show hours with 00 minutes and AM/PM
-      double temperature = 5 + (i % 10); // Dummy temperature data
-
-      weatherData.add({
-        'time': formattedTime,
-        'temperature': temperature,
-      });
-    }
-
-    return weatherData;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 140,
+      margin: const EdgeInsets.symmetric(horizontal: 5),
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(25),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Image.asset(
+              Helper.getImageOnCode(summary.weatherId),
+              height: 62,
+              width: 62,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  summary.time,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white.withOpacity(0.7),
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  '${Helper.kelvinToCelsius(summary.temperature).toStringAsFixed(1)}°C',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

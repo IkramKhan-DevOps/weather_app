@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weather/pages/screens/dash_board_secreen.dart';
+import 'package:weather/pages/screens/dashboard_screen.dart';
 
 class MyTextfiledRow extends StatelessWidget {
   final TextEditingController controller;

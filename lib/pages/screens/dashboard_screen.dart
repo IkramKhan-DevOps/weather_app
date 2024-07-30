@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:weather/pages/screens/forecast_secreen.dart';
-import 'package:weather/pages/screens/home_secreen.dart';
+import 'package:weather/pages/screens/forecast_screen.dart';
+import 'package:weather/pages/screens/home_screen.dart';
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
-import 'package:weather/pages/screens/search_secreen.dart';
+import 'package:weather/pages/screens/search_screen.dart';
 
 class DashBoardScreen extends StatefulWidget {
   const DashBoardScreen({super.key});

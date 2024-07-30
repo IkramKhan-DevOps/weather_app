@@ -2,57 +2,42 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:weather/core/api_service.dart';
 import 'package:weather/pages/views/daily_forcast_view.dart';
 import 'package:weather/pages/views/weekly_forecast_view.dart';
 
-class ForecastScreen extends StatefulWidget {
+import '../../core/providers.dart';
+
+class ForecastScreen extends ConsumerWidget {
   const ForecastScreen({super.key});
 
   @override
-  State<ForecastScreen> createState() => _ForecastScreenState();
-}
-
-class _ForecastScreenState extends State<ForecastScreen> {
-  final String currentDate = DateFormat('EEEE, d MMMM').format(DateTime.now());
-  String textField1Value = "";
-  DateTime? selectedDate;
-  String selectedDateString = '';
-
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate ?? DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-    );
-    if (picked != null) {
-      setState(() {
-        selectedDate = picked;
-        selectedDateString = DateFormat('EEEE, d MMMM').format(picked);
-        // Fetch weather data for the selected date here
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     Size screenSize = MediaQuery.of(context).size;
+    final forecast = ref.watch(locationForecastWeatherProvider);
+
     return Scaffold(
       backgroundColor: Colors.black,
       extendBodyBehindAppBar: true,
+
+      // APP BAR
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
       ),
+
+      // BODY
       body: Padding(
         padding: const EdgeInsets.fromLTRB(15, 1.0 * kToolbarHeight, 15, 1),
         child: SizedBox(
           height: screenSize.height,
           child: Stack(
             children: [
+              // ===============================================================
               // PURPLE
               Align(
                 alignment: const AlignmentDirectional(3, -0.3),
@@ -103,12 +88,13 @@ class _ForecastScreenState extends State<ForecastScreen> {
                   ),
                 ),
               ),
+              // ===============================================================
 
               //page data
               SizedBox(
                 child: Column(
                   children: [
-                    //heading
+                    // MAIN HEADING
                     const Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Align(
@@ -123,6 +109,8 @@ class _ForecastScreenState extends State<ForecastScreen> {
                         ),
                       ),
                     ),
+
+                    // HEADING
                     const SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -136,9 +124,7 @@ class _ForecastScreenState extends State<ForecastScreen> {
                           ),
                         ),
                         Text(
-                          selectedDateString.isNotEmpty
-                              ? selectedDateString
-                              : currentDate,
+                          '',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.white.withOpacity(0.9),
@@ -146,13 +132,25 @@ class _ForecastScreenState extends State<ForecastScreen> {
                         ),
                       ],
                     ),
+
+                    // ---------------------------------------------------------
                     const SizedBox(height: 20),
-                    const WeatherTileRow(),
+                    forecast.when(
+                      data: (forecast) {
+                        final summaries = WeatherService.aggregateToHourlyData(forecast);
+                        return WeatherTileRow(summaries: summaries);
+                      },
+                      loading: () => const Center(child: CircularProgressIndicator()),
+                      error: (error, stack) => Center(child: Text('Error: $error')),
+                    ),
+                    // ---------------------------------------------------------
+
+                    // HEADING
                     const SizedBox(height: 20),
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           "Next Forecast",
                           style: TextStyle(
                             color: Colors.white,
@@ -160,18 +158,21 @@ class _ForecastScreenState extends State<ForecastScreen> {
                             fontSize: 16,
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () => _selectDate(context),
-                          child: const Icon(
-                            Icons.calendar_month,
-                            size: 28,
-                            color: Colors.white,
-                          ),
-                        ),
                       ],
                     ),
+
+                    // MAIN AREA
+                    // ---------------------------------------------------------
                     const SizedBox(height: 20),
-                    const WeeklyForecastView()
+                    forecast.when(
+                      data: (forecast) {
+                        final summaries = WeatherService.aggregateToDailySummaries(forecast);
+                        return WeeklyForecastView(summaries: summaries);
+                      },
+                      loading: () => const Center(child: CircularProgressIndicator()),
+                      error: (error, stack) => Center(child: Text('Error: $error')),
+                    ),
+                    // ---------------------------------------------------------
                   ],
                 ),
               )

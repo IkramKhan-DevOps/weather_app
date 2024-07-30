@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:weather/core/helpers.dart';
+
+import '../../models/weather_forecast_models.dart';
 
 class WeeklyForecastView extends StatelessWidget {
-  const WeeklyForecastView({super.key});
+  final List<DailySummary> summaries;
+  const WeeklyForecastView({super.key, required this.summaries});
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: ListView.builder(
         padding: const EdgeInsets.only(bottom: 30),
-        itemCount: 7,
+        itemCount: summaries.length,
         itemBuilder: (context, index) {
-          // Get date for each item in the list starting from tomorrow
-          final DateTime date = DateTime.now().add(Duration(days: index + 1));
-          final String dayOfWeek = DateFormat('EEEE').format(date);
-          final String formattedDate = DateFormat('yyyy-MM-dd').format(date);
+
+          DailySummary summary = summaries[index];
 
           return Container(
             margin: const EdgeInsets.only(bottom: 10.0),
@@ -29,9 +30,10 @@ class WeeklyForecastView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          dayOfWeek,
+                          summary.dayName,
                           style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -40,7 +42,7 @@ class WeeklyForecastView extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          formattedDate,
+                          summary.date,
                           style: TextStyle(
                             fontWeight: FontWeight.w400,
                             color: Colors.white.withOpacity(0.7),
@@ -48,9 +50,9 @@ class WeeklyForecastView extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const Text(
-                      "28°C",
-                      style: TextStyle(
+                    Text(
+                      "${Helper.kelvinToCelsius(summary.temperature).toStringAsFixed(1)} °C",
+                      style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
@@ -59,7 +61,7 @@ class WeeklyForecastView extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 15, top: 10),
                       child: Image.asset(
-                        "assets/images/1.png",
+                        Helper.getImageOnCode(summary.weatherId),
                         height: 62,
                         width: 62,
                       ),

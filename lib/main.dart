@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:weather/pages/screens/dash_board_secreen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'core/routes.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -17,7 +22,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const DashBoardScreen(),
+      initialRoute: AppRoutes.dashboardScreen,
+      routes: AppRoutes.routes,
     );
   }
 }

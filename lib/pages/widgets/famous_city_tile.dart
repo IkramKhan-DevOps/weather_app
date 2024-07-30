@@ -34,6 +34,7 @@ class _FamousCityTileState extends State<FamousCityTile> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Column(
+
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
