@@ -25,21 +25,29 @@ if (flutterVersionName == null) {
 
 android {
     namespace = "com.exarth.weather.app.weather_app"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    compileSdkVersion 34
+    ndkVersion = "26.1.10909125"
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
     }
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.exarth.weather.app.weather_app"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-
-        minSdk = 33 //for the current device, later will be changed to 33
+        applicationId "com.exarth.seedswild.app"
+        minSdkVersion 21
+        targetSdkVersion flutter.targetSdkVersion
 
         targetSdk = flutter.targetSdkVersion
         versionCode = flutterVersionCode.toInteger()
