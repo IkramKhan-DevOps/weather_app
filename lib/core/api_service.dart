@@ -17,6 +17,7 @@ class WeatherService {
           '${APIUrls.currentWeather}?lat=${locationModel.latitude}&lon=${locationModel.longitude}&appid=$apiKey');
 
       final response = await http.get(url);
+      print(response.body);
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         return WeatherModel.fromJson(data);
@@ -36,6 +37,7 @@ class WeatherService {
           '${APIUrls.forecastWeather}?lat=${locationModel.latitude}&lon=${locationModel.longitude}&appid=$apiKey');
 
       final response = await http.get(url);
+
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         Console.message(data);

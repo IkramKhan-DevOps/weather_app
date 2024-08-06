@@ -4,7 +4,6 @@ class WeatherModel {
   final String base;
   final Main main;
   final int visibility;
-  final Wind wind;
   final Rain? rain;
   final Clouds clouds;
   final int dt;
@@ -20,7 +19,6 @@ class WeatherModel {
     required this.base,
     required this.main,
     required this.visibility,
-    required this.wind,
     this.rain,
     required this.clouds,
     required this.dt,
@@ -38,7 +36,6 @@ class WeatherModel {
       base: json['base'],
       main: Main.fromJson(json['main']),
       visibility: json['visibility'],
-      wind: Wind.fromJson(json['wind']),
       rain: json['rain'] != null ? Rain.fromJson(json['rain']) : null,
       clouds: Clouds.fromJson(json['clouds']),
       dt: json['dt'],
@@ -124,14 +121,14 @@ class Main {
 }
 
 class Wind {
-  final double speed;
-  final int deg;
-  final double gust;
+  final double? speed;
+  final String? deg;
+  final double? gust;
 
   Wind({
-    required this.speed,
-    required this.deg,
-    required this.gust,
+    this.speed,
+    this.deg,
+    this.gust,
   });
 
   factory Wind.fromJson(Map<String, dynamic> json) {
